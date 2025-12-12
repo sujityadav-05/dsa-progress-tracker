@@ -1,1 +1,58 @@
-afdsa
+import java.util.*;
+
+class Solution {
+    public int countCoveredBuildings(int n, int[][] buildings) {
+
+        // Maps row y → (minX, maxX)
+        HashMap<Integer, int[]> yToMinMaxX = new HashMap<>();
+
+        // Maps column x → (minY, maxY)
+        HashMap<Integer, int[]> xToMinMaxY = new HashMap<>();
+
+        // Step 1: Fill boundaries
+        for (int[] b : buildings) {
+            int x = b[0];
+            int y = b[1];
+
+            // If row y is not present, initialize with (∞, -∞)
+            yToMinMaxX.putIfAbsent(y, new int[]{Integer.MAX_VALUE, Integer.MIN_VALUE});
+
+            // If column x is not present, initialize with (∞, -∞)
+            xToMinMaxY.putIfAbsent(x, new int[]{Integer.MAX_VALUE, Integer.MIN_VALUE});
+
+            int[] row = yToMinMaxX.get(y);
+            int[] col = xToMinMaxY.get(x);
+
+            // Update row minX and maxX
+            row[0] = Math.min(row[0], x);
+            row[1] = Math.max(row[1], x);
+
+            // Update column minY and maxY
+            col[0] = Math.min(col[0], y);
+            col[1] = Math.max(col[1], y);
+        }
+
+        int result = 0;
+
+        // Step 2: Count covered buildings
+        for (int[] b : buildings) {
+            int x = b[0];
+            int y = b[1];
+
+            int[] xr = yToMinMaxX.get(y); // minX, maxX in this row
+            int[] yr = xToMinMaxY.get(x); // minY, maxY in this column
+
+            // Check strict inside boundary
+            if (xr[0] < x && x < xr[1] &&
+                yr[0] < y && y < yr[1]) {
+                result++;
+            }
+        }
+
+        return result;
+    }
+}
+
+//time complexity=O(n)
+//space complexity=O(n)
+     
