@@ -1,0 +1,77 @@
+import java.util.*;
+
+class Solution {
+
+    public boolean coupon(String coup) {
+        if (coup.length() == 0) return false;
+
+        for (int i = 0; i < coup.length(); i++) {
+            char ch = coup.charAt(i);
+            if (!Character.isLetterOrDigit(ch) && ch != '_') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean validBusinessLine(String bl) {
+        return bl.equals("electronics") ||
+               bl.equals("grocery") ||
+               bl.equals("pharmacy") ||
+               bl.equals("restaurant");
+    }
+
+    public List<String> validateCoupons(String[] code, String[] businessLine, boolean[] isActive) {
+
+        int n = code.length;
+
+        // business line order
+        Map<String, Integer> order = new HashMap<>();
+        order.put("electronics", 0);
+        order.put("grocery", 1);
+        order.put("pharmacy", 2);
+        order.put("restaurant", 3);
+
+        // store (code, businessLineIndex)
+        List<Pair> list = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            if (coupon(code[i]) &&
+                validBusinessLine(businessLine[i]) &&
+                isActive[i]) {
+
+                list.add(new Pair(code[i], order.get(businessLine[i])));
+            }
+        }
+
+        // sort
+        list.sort((a, b) -> {
+            if (a.order != b.order) {
+                return a.order - b.order;
+            }
+            return a.code.compareTo(b.code);
+        });
+
+        // extract codes
+        List<String> ans = new ArrayList<>();
+        for (Pair p : list) {
+            ans.add(p.code);
+        }
+
+        return ans;
+    }
+
+    // helper class
+    static class Pair {
+        String code;
+        int order;
+
+        Pair(String code, int order) {
+            this.code = code;
+            this.order = order;
+        }
+    }
+}
+
+//time complexity=O(nlogn)
+//space complexity=O(n)
