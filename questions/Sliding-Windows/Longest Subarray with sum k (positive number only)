@@ -1,0 +1,19 @@
+public static int longestSubarray(int[] arr, int K) {
+    int left = 0, sum = 0, maxLen = 0;
+
+    for (int right = 0; right < arr.length; right++) {
+        sum += arr[right];
+
+        while (sum > K) {
+            sum -= arr[left];
+            left++;
+        }
+
+        if (sum == K) {
+            maxLen = Math.max(maxLen, right - left + 1);
+        }
+    }
+    return maxLen;
+}
+//time complexity=O(n)
+//space complexity=O(1)
