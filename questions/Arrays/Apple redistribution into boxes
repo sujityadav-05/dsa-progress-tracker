@@ -1,0 +1,24 @@
+class Solution {
+    public int minimumBoxes(int[] apple, int[] capacity) {
+        int n=apple.length;
+        int m=capacity.length;
+        int sum=0;
+        for(int i=0;i<n;i++){
+            sum+=apple[i];
+        }
+        Arrays.sort(capacity);
+        int count=1;
+        for(int j=m-1;j>=0;j--){
+            sum=sum-capacity[j];
+            if(sum<=0){
+                return count;
+            }
+            count++;
+        }
+        return 0;
+
+    }
+}
+
+//time complexity=O(n+mlogm)
+//space complexity=O(1)
