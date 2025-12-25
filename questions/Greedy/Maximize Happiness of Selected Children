@@ -1,0 +1,20 @@
+//Approach:sort+greedy
+//TC=o(nlongn)
+//SC=o(longn)
+class Solution {
+    public long maximumHappinessSum(int[] happiness, int k) {
+        int n=happiness.length;
+        Arrays.sort(happiness);
+        int i=n-1; //iterater
+        int j=0 ; //decrement
+        long totalHappiness=0;
+        //calculate the maximum happiness sum
+        while(j<k && i>=0){
+            //adjust happiness and ensure its not negative
+            totalHappiness+=Math.max(happiness[i]-j,0);
+            j++;
+            i--;
+        }
+        return totalHappiness;
+    }
+}
